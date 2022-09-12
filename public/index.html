@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>video streaming</title>
+  </head>
+
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+    }
+
+    h1,
+    p {
+      font-size: 13px;
+    }
+
+    #videoPlayer {
+      width: 100%;
+    }
+
+    #videoContainer {
+      position: relative;
+    }
+
+    #progressBar {
+      position: absolute;
+      left: 0;
+      bottom: 10px;
+      height: 10px;
+      width: 0;
+      background-color: red;
+    }
+  </style>
+
+  <body>
+    <h1>
+      node.js video streaming + ultra-simple custom video player in pure js
+    </h1>
+
+    <div id="videoContainer">
+      <video id="videoPlayer" controls preload="metadata">
+        <source id="videoPlayerSource"
+          src="/video/1"
+          type="video/mp4"
+        />
+      </video>
+      <div id="progressBar"></div>
+    </div>
+    <div id="counter"></div>
+    <button id="play">play/pause</button>
+    <button id="stop">stop</button>
+    <div id="playlist">
+      <button id="vid1">1</button>
+     <button id="vid2">2</button>
+    </div>
+  </body>
+
+  <script>
+    const video = document.getElementById("videoPlayer");
+    const counter = document.getElementById("counter");
+    const source = document.getElementById("videoPlayerSource")
+    const playlist = document.getElementById("playlist")
+    const play = document.getElementById("play");
+    const stop = document.getElementById("stop");
+    const vid2 = document.getElementById("vid2");
+
+    const progressBar = document.getElementById("progressBar");
+    let videoDuration;
+    video.controls = false;
+    counter.innerText = "0 / ???";
+    video.addEventListener("loadedmetadata", function () {
+      videoDuration = Math.floor(video.duration);
+      counter.innerText = "0 | " + videoDuration;
+    });
+    play.addEventListener("click", (e) => {
+      if (video.paused || video.ended) {
+        video.play();
+      } else {
+        video.pause();
+      }
+    });
+    stop.addEventListener("click", (e) => {
+      video.pause();
+      video.currentTime = 0;
+    });
+    video.addEventListener("timeupdate", () => {
+      counter.innerText = Math.floor(video.currentTime) + " / " + videoDuration;
+      progressBar.style.width =
+        Math.floor((video.currentTime / video.duration) * 100) + "%";
+    });
+
+    playlist.addEventListener("click", (e) => {
+      const vid = e.target.id.substr(3)
+      source.setAttribute('src', `/video/${vid}`)
+      video.load()
+    })
+  </script>
+</html>
