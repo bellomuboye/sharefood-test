@@ -1,10 +1,10 @@
 {
-  "name": "nodejs-video-streaming-simple-player",
+  "name": "sharefood-video-stream-test",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "nodemon src/index.js localhost 8080"
+    "start": "nodemon src/index.js"
   },
   "dependencies": {
     "express": "4.16.4"
